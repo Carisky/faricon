@@ -1,0 +1,56 @@
+.nav{
+    background-color: rgb(18, 22, 33)
+}
+
+.link{
+    font-weight: 600;
+    color: #b3b9c6;
+    text-decoration: none;
+}
+.link:active{
+    color: aliceblue;
+}
+.link:visited{
+    color: #b3b9c6;
+}
+.navelement{
+    margin: 15px;
+    height: 25px;
+    width: 120px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.selected{
+    background-color: rgba(73, 24, 119, 0.793);
+    transition: background-color 0.5s ease;
+    -webkit-animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) forwards;
+	animation: scale-up-center 0.8s cubic-bezier(0.390, 0.575, 0.565, 1.000) forwards;
+}
+
+
+
+@-webkit-keyframes scale-up-center {
+    0% {
+      -webkit-transform: scale(0.5);
+              transform: scale(0.5);
+    }
+    100% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+    }
+  }
+  @keyframes scale-up-center {
+    0% {
+      -webkit-transform: scale(0.5);
+              transform: scale(0.5);
+    }
+    100% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+    }
+  }
+  
