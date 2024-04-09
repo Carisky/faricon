@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/Requests")
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"http://172.17.0.2:3000"})
 public class RequestController {
     private final RequestService requestService;
     @Autowired

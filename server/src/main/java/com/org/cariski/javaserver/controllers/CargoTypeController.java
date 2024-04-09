@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/CargoTypes")
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"http://172.17.0.2:3000"})
 public class CargoTypeController {
     private final CargoTypeService cargoTypeService;
 
