@@ -2,7 +2,7 @@ package com.org.cariski.javaserver.controllers;
 
 import com.org.cariski.javaserver.controllers.response.Response;
 import com.org.cariski.javaserver.models.Request;
-import com.org.cariski.javaserver.services.RequestService;
+import com.org.cariski.javaserver.services.impl.RequestServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +17,14 @@ import java.util.List;
 @RequestMapping("/Requests")
 @CrossOrigin(origins = {"http://localhost:3000"})
 public class RequestController {
-    private final RequestService requestService;
+    private final RequestServiceImpl requestService;
     @Autowired
-    public RequestController (RequestService requestService){
+    public RequestController (RequestServiceImpl requestService){
         this.requestService = requestService;
     }
 
     @GetMapping("/")
-    public ResponseEntity<Object> getRequests() {
+    public ResponseEntity<Object> findAll() {
         List<Request> requests = requestService.findAll();
         if (requests != null && !requests.isEmpty()) {
             return ResponseEntity.ok().body(new Response<>(requests, HttpStatus.OK.value(), "Requests found"));

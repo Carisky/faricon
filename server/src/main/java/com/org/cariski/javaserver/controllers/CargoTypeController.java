@@ -3,7 +3,7 @@ package com.org.cariski.javaserver.controllers;
 
 import com.org.cariski.javaserver.controllers.response.Response;
 import com.org.cariski.javaserver.models.CargoType;
-import com.org.cariski.javaserver.services.CargoTypeService;
+import com.org.cariski.javaserver.services.impl.CargoTypeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +18,15 @@ import java.util.List;
 @RequestMapping("/CargoTypes")
 @CrossOrigin(origins = {"http://localhost:3000"})
 public class CargoTypeController {
-    private final CargoTypeService cargoTypeService;
+    private final CargoTypeServiceImpl cargoTypeService;
 
     @Autowired
-    public CargoTypeController(CargoTypeService cargoTypeService){
+    public CargoTypeController(CargoTypeServiceImpl cargoTypeService){
         this.cargoTypeService = cargoTypeService;
     }
+
     @GetMapping("/")
-    public ResponseEntity<Object> getCargoTypes(){
+    public ResponseEntity<Object> findAll() {
         List<CargoType> cargoTypes = cargoTypeService.findAll();
         if (cargoTypes != null && !cargoTypes.isEmpty()) {
             return ResponseEntity.ok().body(new Response<>(cargoTypes, HttpStatus.OK.value(), "Cargo Types found"));
