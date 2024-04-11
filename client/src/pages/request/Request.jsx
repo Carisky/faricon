@@ -6,7 +6,7 @@ function Request() {
   return (
     <Layout>
       <div className={styles.page}>
-        <div>/Request</div>
+        
         <AddRequestForm />
       </div>
     </Layout>
