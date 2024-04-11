@@ -3,8 +3,12 @@ import { Link, useLocation } from "react-router-dom";
 import styles from "./styles.module.css";
 import { Box, Divider } from "@mui/material";
 
+const root="/admin";
+
 const actions = [
-  { link: "/admin", label: "Home" },
+  { link: root, label: "Home" },
+  { link: root+"/drivers", label: "drivers" },
+  { link: root+"/requests", label: "requests" },
 ];
 
 function Navigation() {
