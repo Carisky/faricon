@@ -6,10 +6,7 @@ import com.org.cariski.javaserver.services.impl.RequestServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +15,9 @@ import java.util.List;
 @CrossOrigin(origins = {"http://localhost:3000"})
 public class RequestController {
     private final RequestServiceImpl requestService;
+
     @Autowired
-    public RequestController (RequestServiceImpl requestService){
+    public RequestController(RequestServiceImpl requestService) {
         this.requestService = requestService;
     }
 
@@ -30,6 +28,16 @@ public class RequestController {
             return ResponseEntity.ok().body(new Response<>(requests, HttpStatus.OK.value(), "Requests found"));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response<>(null, HttpStatus.NOT_FOUND.value(), "No Requests found"));
+        }
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<Object> create(@RequestBody Request request) {
+        Request created = requestService.create(request);
+        if (created != null) {
+            return ResponseEntity.ok().body(new Response<>(created, HttpStatus.OK.value(), "Request created"));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response<>(null, HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error during Request creating"));
         }
     }
 }
