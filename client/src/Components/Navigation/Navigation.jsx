@@ -5,7 +5,6 @@ import { Box, Divider } from "@mui/material";
 
 const actions = [
   { link: "/", label: "Home" },
-  { link: "/drivers", label: "Drivers" },
   { link: "/request", label: "Request" },
   { link: "/profile", label: "Profile" },
 ];
