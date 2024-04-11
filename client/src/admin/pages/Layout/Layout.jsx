@@ -1,19 +1,18 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux'; // Импортируем useSelector из react-redux
 import styles from "./styles.module.css";
-import useAuthStore from "../../../states/useAuthStore";
-import Navigation from '../../../Components/Navigation/Navigation';
-
+import Navigation from '../../Components/Navigation/Navigation';
+import {useNavigate} from "react-router-dom"
 export default function Layout({ children }) {
+  // Получаем информацию о пользователе из Redux-стейта
+  const user = useSelector(state => state.user); // Предположим, что ваш стейт называется user и содержит информацию о текущем пользователе
   const navigate = useNavigate();
-  const user = useAuthStore((state) => state);
-
   useEffect(() => {
+    console.log(user)
     if (user.role !== "admin") {
       navigate("/access-denied")
     }
   }, [user.role,navigate]);
-
   return (
     <div className={styles.layout}>
       <Navigation />
