@@ -1,8 +1,0 @@
-<must>
-make models for every table in db
-make repositories for every table in db
-make services for every table in db
-
-
-<optional>
-make controllers for every service

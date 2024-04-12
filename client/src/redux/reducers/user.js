@@ -1,5 +1,5 @@
 const initialState = {
-    role: "admin",
+    role: "user",
     name: null,
     token: null
   };

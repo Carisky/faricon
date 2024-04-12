@@ -15,6 +15,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./redux/store";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Auth0Provider } from "@auth0/auth0-react";
+import Login from "./pages/profile/Login";
 
 const darkTheme = createTheme({
   palette: {
@@ -28,9 +30,15 @@ root.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={darkTheme}>
+        <Auth0Provider
+            domain="dev-014fm6ate4w1mp3d.us.auth0.com"
+            clientId="VR9v7GBUo73srJKNZMjhO8w74TI4YuOL"
+            redirectUri={window.location.origin}
+          >
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Login />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/request" element={<Request />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/access-denied" element={<AccessDenied />} />
@@ -38,6 +46,7 @@ root.render(
               <Route path="/*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
+          </Auth0Provider>
         </ThemeProvider>
       </PersistGate>
     </Provider>

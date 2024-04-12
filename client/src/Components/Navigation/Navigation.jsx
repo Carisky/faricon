@@ -4,7 +4,7 @@ import styles from "./styles.module.css";
 import { Box, Divider } from "@mui/material";
 
 const actions = [
-  { link: "/", label: "Home" },
+  { link: "/home", label: "Home" },
   { link: "/request", label: "Request" },
   { link: "/profile", label: "Profile" },
 ];
