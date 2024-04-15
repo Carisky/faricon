@@ -1,5 +1,6 @@
 import axios from 'axios'
 import ApiConfig from '../ApiConfig';
+import AuthHeaders from '../../userForLogin';
 
 
 class DriverService {
@@ -15,7 +16,11 @@ class DriverService {
 
     static async findAll() {
         try {
-            const response = await axios.get(ApiConfig.apiDriversAdress);
+            const response = await axios.get(ApiConfig.apiDriversAdress,{
+                headers: {
+                    'Authorization': AuthHeaders.user
+                  }
+            });
             return response.data;
         } catch (error) {
             console.error('Error fetching drivers:', error);
