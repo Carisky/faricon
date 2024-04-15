@@ -1,7 +1,7 @@
 const initialState = {
-    role: "user",
-    name: null,
-    token: null
+    role: undefined,
+    name: undefined,
+    password: undefined,
   };
   
   const SET_USER = 'SET_USER';
@@ -14,7 +14,7 @@ const initialState = {
           ...state,
           role: action.payload.role,
           name: action.payload.name,
-          token: action.payload.token
+          password: action.payload.password,
         };
       case CLEAR_USER:
         return {
