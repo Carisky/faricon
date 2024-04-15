@@ -1,15 +1,28 @@
 import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import UserLoginService from "../../api/services/UserLoginService";
+
+const CLEAR_USER = "CLEAR_USER";
+
+const clearUser = () => ({
+  type: CLEAR_USER,
+});
 
 const Logout = () => {
-    const user = useSelector((state)=>state.user)
-    const handleLogOut = ()=>{
+  const dispatch = useDispatch(); 
 
+  const logout = async () => {
+    try {
+      await UserLoginService.logout();
+      dispatch(clearUser());
+      localStorage.removeItem("name")
+      localStorage.removeItem("password")
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
+  };
 
-  const { logout } = useAuth0();
-  return <button onClick={() => logout()}>Log out</button>;
+  return <button onClick={logout}>Log out</button>;
 };
 
 export default Logout;

@@ -1,48 +1,148 @@
-import React, { useEffect } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import {
+  Box,
+  Button,
+  InputAdornment,
+  OutlinedInput,
+} from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useForm } from "react-hook-form";
+import UserLoginService from "../../api/services/UserLoginService";
 
-// Define action types
-const SET_USER = 'SET_USER';
+const SET_USER = "SET_USER";
 
-// Define action creators
 const setUser = (userData) => ({
   type: SET_USER,
-  payload: userData
+  payload: userData,
 });
 
 const Login = () => {
-  const { loginWithRedirect, isAuthenticated, getAccessTokenSilently, user } =
-    useAuth0();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const userState = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      if (isAuthenticated) {
-        const token = await getAccessTokenSilently();
-        console.log(token);
-        
-        // Dispatch action to set user data in Redux store
-        dispatch(setUser({ role: "user", name: user.name, token: token }));
-      }
+  const changeVisability = () => {
+    setShowPassword(!showPassword);
+  };
 
-      if (isAuthenticated) {
-        console.log(userState)
-        if (userState.role === "admin") {
-          navigate("/admin");
-        } else if (userState.role === "user") {
-          navigate("/home");
-        }
+  const loginWithRedirect = (userState) => {
+    if (typeof userState !== "undefined") {
+      if (userState.role === "ADMIN") {
+        navigate("/admin");
+      } else if (userState.role === "USER") {
+        navigate("/home");
       }
     }
+  };
 
-    fetchData();
-  }, [user]); // Add user to dependency array
+  const onSubmit = async (data) => {
 
-  return <button onClick={() => loginWithRedirect()}>Log In</button>;
+    localStorage.setItem("name",data.username)
+    localStorage.setItem("password",data.password)
+
+    try {
+      const response = await UserLoginService.login(
+        data.username,
+        data.password
+      );
+      dispatch(
+        setUser({
+          name: response.data.name,
+          role: response.data.authorities[0].authority,
+          password: data.password,
+        })
+      );
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+
+    loginWithRedirect(data);
+  };
+
+  useEffect(() => {
+    loginWithRedirect(userState);
+    // eslint-disable-next-line
+  }, [userState]);
+
+  return (
+    <Box
+      sx={{
+        backgroundColor: "#000",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <OutlinedInput
+          label="Username"
+          {...register("username")}
+          fullWidth
+          margin="normal"
+          error={!!errors.cargo_quantity}
+        />
+        <OutlinedInput
+          label="Password"
+          {...register("password")}
+          fullWidth
+          margin="normal"
+          type={showPassword === true ? "text" : "password"}
+          endAdornment={
+            <InputAdornment position="end">
+              {showPassword ? (
+                <VisibilityOffIcon
+                  onClick={changeVisability}
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                />
+              ) : (
+                <VisibilityIcon
+                  onClick={changeVisability}
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                />
+              )}
+            </InputAdornment>
+          }
+        />
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Button
+            sx={{
+              width: "40%",
+              display: "flex",
+              justifyContent: "space-around",
+            }}
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
+            <Box>Login</Box>
+            <SendIcon />
+          </Button>
+        </Box>
+      </form>
+    </Box>
+  );
 };
 
 export default Login;
