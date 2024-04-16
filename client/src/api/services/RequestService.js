@@ -6,7 +6,7 @@ import AuthHeaders from '../../userForLogin';
 class RequestService {
     static async findById(Id) {
         try {
-            const response = await axios.get(`${ApiConfig.apiRequestsAdress}${Id}`);
+            const response = await axios.get(`${ApiConfig.apiRequestsAdressUSER}${Id}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching request:', error);
@@ -16,7 +16,7 @@ class RequestService {
 
     static async findAll() {
         try {
-            const response = await axios.get(ApiConfig.apiRequestsAdress,{
+            const response = await axios.get(ApiConfig.apiRequestsAdressADMIN,{
                 headers: {
                     'Authorization': AuthHeaders.user
                   }
@@ -30,7 +30,7 @@ class RequestService {
 
     static async create(data) {
         try {
-            const response = await axios.post(ApiConfig.apiRequestsAdress,data,{
+            const response = await axios.post(ApiConfig.apiRequestsAdressUSER,data,{
                 headers: {
                     'Authorization': AuthHeaders.user
                   }

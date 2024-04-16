@@ -9,10 +9,12 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Layout from "../Layout/Layout";
 import RequestService from "../../../api/services/RequestService";
+import DriverService from "../../../api/services/DriverService";
+import AssignDriver from "../drivers/AssignDriver";
 
 function Requests() {
-  const [data, setData] = useState(null);
-
+  const [data, setData] = useState([]);
+  const [drivers, setDrivers] = useState([])
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -23,6 +25,16 @@ function Requests() {
         console.error("Error fetching data:", error);
       }
     };
+    const fetchDrivers = async () => {
+      try {
+        const response = await DriverService.findAll();
+        setDrivers(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching drivers:", error);
+      }
+    };
+    fetchDrivers();
     fetchData();
   }, []);
 
@@ -58,7 +70,11 @@ function Requests() {
             </TableBody>
           </Table>
         </TableContainer>
+        <AssignDriver drivers={drivers} requests={data}/>
       </div>
+      
+      
+
     </Layout>
   );
 }

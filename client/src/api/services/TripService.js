@@ -2,20 +2,21 @@ import axios from 'axios'
 import ApiConfig from '../ApiConfig';
 import AuthHeaders from '../../userForLogin';
 
-class CargoTypeService {
-    static async findAll() {
+
+class TripService {
+    static async create(data) {
         try {
-            const response = await axios.get(ApiConfig.apiCargoTypesAdressUSER,{
+            const response = await axios.post(ApiConfig.apiTripAdressADMIN, data,{
                 headers: {
                     'Authorization': AuthHeaders.user
                   }
             });
             return response.data;
         } catch (error) {
-            console.error('Error fetching cargo types:', error);
+            console.error('Error creating Trip:', error);
             throw error;
         }
     }
 }
 
-export default CargoTypeService
+export default TripService

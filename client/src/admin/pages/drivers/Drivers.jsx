@@ -9,9 +9,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Layout from "../Layout/Layout";
+import AssignDriver from "./AssignDriver";
 
 function Drivers() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +59,7 @@ function Drivers() {
         </Table>
       </TableContainer>
     </div>
+
     </Layout>
   );
 }
