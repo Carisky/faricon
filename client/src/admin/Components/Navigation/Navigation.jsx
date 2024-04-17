@@ -9,6 +9,7 @@ const actions = [
   { link: root, label: "Home" },
   { link: root+"/drivers", label: "drivers" },
   { link: root+"/requests", label: "requests" },
+  { link: root+"/profile", label: "profile" },
 ];
 
 function Navigation() {
