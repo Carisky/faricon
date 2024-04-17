@@ -28,9 +28,11 @@ const ApiConfig = {
     apiCarsAdressAdmin:BaseLink+"/Cars/"+mode.admin,
 
     apiTripAdressADMIN:BaseLink+"/Trips/"+mode.admin,
+    apiTripAdressDRIVER:BaseLink+"/Trips/"+mode.driver,
 
     apiLoginAdress: BaseLink+"/Login/",
     apiLogOutAdress: BaseLink+"/logout",
+    
 };
 
 export default ApiConfig;
