@@ -41,6 +41,8 @@ const Login = () => {
         navigate("/admin");
       } else if (userState.role === "USER") {
         navigate("/home");
+      } else if  (userState.role === "DRIVER"){
+        navigate("/driver");
       }
     }
   };
