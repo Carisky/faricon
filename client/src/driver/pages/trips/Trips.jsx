@@ -13,6 +13,7 @@ import {
   Paper,
   Button,
 } from "@mui/material";
+import { dismissToast, showToast } from "../../../Components/Toast/showToast";
 
 export default function Trips() {
   const [trips, setTrips] = useState([]);
@@ -20,27 +21,38 @@ export default function Trips() {
 
   useEffect(() => {
     const fetchTripsForDriver = async () => {
+      const loadingToastId = await showToast("Fetching trips for driver...");
       try {
         const response = await TripService.getTripsForDriver(userState.name);
+        dismissToast(loadingToastId);
         setTrips(response.data);
+        showToast("Trips for driver fetched successfully!", 'success');
       } catch (error) {
+        dismissToast(loadingToastId);
         console.error("Error fetching trips for driver:", error);
+        showToast(error.message || "Error fetching trips for driver", 'error');
       }
     };
-
+  
     fetchTripsForDriver();
   }, []);
-
+  
   const handleFinishTrip = async (trip) => {
+    const loadingToastId = await showToast("Finishing trip...");
     try {
-        await TripService.finishTrip(userState.name, trip);
-        const updatedTrips = trips.filter(t => t.id !== trip.id);
-        setTrips(updatedTrips);
-        console.log("Trip finished:", trip);
+      await TripService.finishTrip(userState.name, trip);
+      dismissToast(loadingToastId);
+      const updatedTrips = trips.filter(t => t.id !== trip.id);
+      setTrips(updatedTrips);
+      console.log("Trip finished:", trip);
+      showToast("Trip finished successfully!", 'success');
     } catch (error) {
-        console.error("Error finishing trip:", error);
+      dismissToast(loadingToastId);
+      console.error("Error finishing trip:", error);
+      showToast(error.message || "Error finishing trip", 'error');
     }
-};
+  };
+  
 
 
   return (

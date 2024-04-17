@@ -11,29 +11,42 @@ import Layout from "../Layout/Layout";
 import RequestService from "../../../api/services/RequestService";
 import DriverService from "../../../api/services/DriverService";
 import AssignDriver from "../drivers/AssignDriver";
+import { dismissToast, showToast } from "../../../Components/Toast/showToast";
 
 function Requests() {
   const [data, setData] = useState([]);
   const [drivers, setDrivers] = useState([])
   useEffect(() => {
     const fetchData = async () => {
+      const loadingToastId = await showToast("Fetching request data...");
       try {
         const response = await RequestService.findAll();
+        dismissToast(loadingToastId);
         setData(response.data);
         console.log(response.data);
+        showToast("Request data fetched successfully!", 'success');
       } catch (error) {
-        console.error("Error fetching data:", error);
+        dismissToast(loadingToastId);
+        console.error("Error fetching request data:", error);
+        showToast(error.message || "Error fetching request data", 'error');
       }
     };
+  
     const fetchDrivers = async () => {
+      const loadingToastId = await showToast("Fetching driver data...");
       try {
         const response = await DriverService.findAll();
+        dismissToast(loadingToastId);
         setDrivers(response.data);
         console.log(response.data);
+        showToast("Driver data fetched successfully!", 'success');
       } catch (error) {
+        dismissToast(loadingToastId);
         console.error("Error fetching drivers:", error);
+        showToast(error.message || "Error fetching drivers", 'error');
       }
     };
+  
     fetchDrivers();
     fetchData();
   }, []);
@@ -72,9 +85,6 @@ function Requests() {
         </TableContainer>
         <AssignDriver drivers={drivers} requests={data}/>
       </div>
-      
-      
-
     </Layout>
   );
 }

@@ -5,7 +5,8 @@ import MenuItem from "@mui/material/MenuItem";
 import { useEffect, useState } from "react";
 import CarService from "../../../api/services/CarService";
 import TripService from "../../../api/services/TripService";
-
+import { dismissToast, showToast } from "../../../Components/Toast/showToast";
+import { Box } from "@mui/material";
 function AssignDriver({ drivers, requests }) {
   const [currentDriver, setCurrentDriver] = useState(
     drivers.length > 0 ? drivers[0] : null
@@ -16,27 +17,31 @@ function AssignDriver({ drivers, requests }) {
 
   useEffect(() => {
     const fetchData = async () => {
+      const loadingToastId = await showToast("Fetching data...");
       try {
         const response = await CarService.findAll();
+        dismissToast(loadingToastId);
         setCars(response.data);
-        console.log(response.data);
+        showToast("Data fetched successfully!", 'success');
       } catch (error) {
+        dismissToast(loadingToastId);
         console.error("Error fetching data:", error);
+        showToast(error.message || "Error fetching data", 'error');
       }
     };
     fetchData();
   }, []);
 
   const onSubmit = async (data) => {
-    const fetchData = async () => {
-      try {
-        const response = await TripService.create(data);
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
+    const loadingToastId = await showToast("Fetching data...");
+    try {
+      await TripService.create(data);
+      dismissToast(loadingToastId);
+      showToast("Driver assigned!", "success");
+    } catch (error) {
+      dismissToast(loadingToastId);
+      showToast(error.message || "Error Driver assigning", "error");
+    }
   };
 
   const {
@@ -46,76 +51,79 @@ function AssignDriver({ drivers, requests }) {
   } = useForm();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <TextField
-        required={true}
-        select
-        label="Driver"
-        {...register("driver")}
-        fullWidth
-        margin="normal"
-        onChange={(e) => {
-          setCurrentDriver(e.target.value);
-        }}
-      >
-        {drivers.map(
-          (driver) =>
-            driver.status && (
-              <MenuItem key={driver.id} value={driver}>
-                {driver.name}
-              </MenuItem>
-            )
-        )}
-      </TextField>
+    <Box>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextField
+          required={true}
+          select
+          label="Driver"
+          {...register("driver")}
+          fullWidth
+          margin="normal"
+          onChange={(e) => {
+            setCurrentDriver(e.target.value);
+          }}
+        >
+          {drivers.map(
+            (driver) =>
+              driver.status && (
+                <MenuItem key={driver.id} value={driver}>
+                  {driver.name}
+                </MenuItem>
+              )
+          )}
+        </TextField>
 
-      <TextField
-        required={true}
-        select
-        label="Request"
-        {...register("request")}
-        fullWidth
-        margin="normal"
-        onChange={(e) => {
-          setCurrentRequest(e.target.value);
-        }}
-      >
-        {requests.map(
-          (request) =>
-            currentDriver &&
-            request.cargoType.require_xp <= currentDriver.experience && (
-              <MenuItem key={request.id} value={request}>
-                {request.destination.name}
-              </MenuItem>
-            )
-        )}
-      </TextField>
+        <TextField
+          required={true}
+          select
+          label="Request"
+          {...register("request")}
+          fullWidth
+          margin="normal"
+          onChange={(e) => {
+            setCurrentRequest(e.target.value);
+          }}
+        >
+          {requests.map(
+            (request) =>
+              currentDriver &&
+              request.cargoType.require_xp <= currentDriver.experience && (
+                <MenuItem key={request.id} value={request}>
+                  {request.destination.name}
+                </MenuItem>
+              )
+          )}
+        </TextField>
 
-      <TextField
-        required={true}
-        select
-        label="Car"
-        {...register("car")}
-        fullWidth
-        margin="normal"
-        onChange={(e) => {
-          setCurrentCar(e.target.value);
-        }}
-      >
-        {cars?.map(
-          (car) =>
-            car.carryingCapacity >= currentRequest?.cargoQuantity &&
-            car.condition && (
-              <MenuItem key={car.id} value={car}>
-                {car.brand}
-              </MenuItem>
-            )
-        )}
-      </TextField>
+        <TextField
+          required={true}
+          select
+          label="Car"
+          {...register("car")}
+          fullWidth
+          margin="normal"
+          onChange={(e) => {
+            setCurrentCar(e.target.value);
+          }}
+        >
+          {cars?.map(
+            (car) =>
+              car.carryingCapacity >= currentRequest?.cargoQuantity &&
+              car.condition && (
+                <MenuItem key={car.id} value={car}>
+                  {car.brand}
+                </MenuItem>
+              )
+          )}
+        </TextField>
 
-      <Button type="submit" variant="contained" color="primary">
-        Assign Driver
-      </Button>
-    </form>
+        <Button type="submit" variant="contained" color="primary">
+          Assign Driver
+        </Button>
+      </form>
+
+    </Box>
   );
 }
 

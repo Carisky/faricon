@@ -6,7 +6,8 @@ import MenuItem from "@mui/material/MenuItem";
 import CargoTypeService from "../../api/services/CargoTypeService";
 import DestinationService from "../../api/services/DestinationService";
 import RequestService from "../../api/services/RequestService";
-
+import { Box } from "@mui/material";
+import { dismissToast, showToast } from "../Toast/showToast";
 function AddRequestForm() {
   const [cargoTypes, setCargoTypes] = useState([]);
   const [destinations, setDestinations] = useState([]);
@@ -43,14 +44,23 @@ function AddRequestForm() {
   } = useForm();
 
   const onSubmit = async (data) => {
+    const loadingToastId = await showToast("Submitting request...");
     try {
-      await RequestService.create(data);
+      const response = await RequestService.create(data);
+      dismissToast(loadingToastId);
+      if (response.status === 200) {
+        showToast("Request submitted successfully!", 'success');
+      } else {
+        showToast("Failed to submit request. Please try again later.", 'error');
+      }
     } catch (error) {
-      console.error("Error creating request:", error);
+      dismissToast(loadingToastId);
+      showToast(error.message || "Something went wrong", 'error');
     }
   };
 
   return (
+    <Box>
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextField
         label="Cargo Quantity"
@@ -91,7 +101,9 @@ function AddRequestForm() {
       <Button type="submit" variant="contained" color="primary">
         Submit
       </Button>
+
     </form>
+    </Box>
   );
 }
 

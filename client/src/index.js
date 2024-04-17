@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import 'react-toastify/dist/ReactToastify.css';
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
@@ -17,6 +18,7 @@ import { store, persistor } from "./redux/store";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Login from "./pages/profile/Login";
+import { ToastContainer } from "react-toastify";
 
 const darkTheme = createTheme({
   palette: {
@@ -26,7 +28,6 @@ const darkTheme = createTheme({
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={darkTheme}>
@@ -44,8 +45,10 @@ root.render(
           </BrowserRouter>
         </ThemeProvider>
       </PersistGate>
+      <ToastContainer
+      autoClose={3000}
+      />
     </Provider>
-  </React.StrictMode>
 );
 
 reportWebVitals();

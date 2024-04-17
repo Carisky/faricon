@@ -12,6 +12,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useForm } from "react-hook-form";
 import UserLoginService from "../../api/services/UserLoginService";
+import { dismissToast, showToast } from "../../Components/Toast/showToast";
 
 const SET_USER = "SET_USER";
 
@@ -36,27 +37,36 @@ const Login = () => {
   };
 
   const loginWithRedirect = (userState) => {
-    if (typeof userState !== "undefined") {
-      if (userState.role === "ADMIN") {
-        navigate("/admin");
-      } else if (userState.role === "USER") {
-        navigate("/home");
-      } else if  (userState.role === "DRIVER"){
-        navigate("/driver");
+
+    setTimeout(() => {
+      if (typeof userState !== "undefined") {
+        if (userState.role === "ADMIN") {
+          navigate("/admin");
+        } else if (userState.role === "USER") {
+          navigate("/home");
+        } else if  (userState.role === "DRIVER"){
+          navigate("/driver");
+        }
       }
-    }
+    }, 1200);
+
+    
   };
 
   const onSubmit = async (data) => {
-
-    localStorage.setItem("name",data.username)
-    localStorage.setItem("password",data.password)
-
+    localStorage.setItem("name", data.username);
+    localStorage.setItem("password", data.password);
+  
+    const loadingToastId = await showToast("Logging in...");
+  
     try {
       const response = await UserLoginService.login(
         data.username,
         data.password
       );
+  
+      dismissToast(loadingToastId);
+  
       dispatch(
         setUser({
           name: response.data.name,
@@ -64,16 +74,20 @@ const Login = () => {
           password: data.password,
         })
       );
+  
+      showToast("Login successful!", 'success');
+  
+      loginWithRedirect(data);
     } catch (error) {
+      dismissToast(loadingToastId);
       console.error("Error fetching data:", error);
+      showToast("Wrong Credentionals","error");
     }
-
-    loginWithRedirect(data);
   };
 
   useEffect(() => {
     loginWithRedirect(userState);
-    // eslint-disable-next-line
+    
   }, [userState]);
 
   return (
@@ -94,11 +108,17 @@ const Login = () => {
           fullWidth
           margin="normal"
           error={!!errors.cargo_quantity}
+          sx={{
+            marginBottom:"20px"
+          }}
         />
         <OutlinedInput
           label="Password"
           {...register("password")}
           fullWidth
+          sx={{
+            marginBottom:"20px"
+          }}
           margin="normal"
           type={showPassword === true ? "text" : "password"}
           endAdornment={
