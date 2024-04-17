@@ -12,6 +12,7 @@ function AssignDriver({ drivers, requests }) {
     drivers.length > 0 ? drivers[0] : null
   );
   const [cars, setCars] = useState();
+  // eslint-disable-next-line
   const [currentCar, setCurrentCar] = useState();
   const [currentRequest, setCurrentRequest] = useState();
 
@@ -47,6 +48,7 @@ function AssignDriver({ drivers, requests }) {
   const {
     register,
     handleSubmit,
+    // eslint-disable-next-line
     formState: { errors },
   } = useForm();
 

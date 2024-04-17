@@ -11,6 +11,7 @@ export default function Layout({ children }) {
     if (user.role !== "USER") {
       navigate("/access-denied")
     }
+    // eslint-disable-next-line
   }, [user.role,navigate]);
   return (
     <div className={styles.layout}>

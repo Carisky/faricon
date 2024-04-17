@@ -35,6 +35,7 @@ export default function Trips() {
     };
   
     fetchTripsForDriver();
+    // eslint-disable-next-line
   }, []);
   
   const handleFinishTrip = async (trip) => {

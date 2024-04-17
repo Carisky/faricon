@@ -87,7 +87,7 @@ const Login = () => {
 
   useEffect(() => {
     loginWithRedirect(userState);
-    
+    // eslint-disable-next-line
   }, [userState]);
 
   return (
