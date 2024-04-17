@@ -7,6 +7,7 @@ import Home from "./pages/home/Home";
 import Request from "./pages/request/Request";
 import Profile from "./pages/profile/Profile";
 import AdminIndex from "./admin/AdminIndex";
+import DriverIndex from "./driver/DriverIndex";
 import AccessDenied from "./pages/accessdenied/AccessDenied";
 import NotFound from "./pages/notfound/NotFound";
 
@@ -37,6 +38,7 @@ root.render(
               <Route path="/profile" element={<Profile />} />
               <Route path="/access-denied" element={<AccessDenied />} />
               <Route path="/admin/*" element={<AdminIndex />} />
+              <Route path="/driver/*" element={<DriverIndex />} />
               <Route path="/*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
