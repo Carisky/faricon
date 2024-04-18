@@ -1,15 +1,14 @@
 import styles from "../page.module.css";
-import Layout from "../layout/Layout";
 import Logout from "./Logout";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
-import PersonIcon from '@mui/icons-material/Person';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import Layout from "../layout/Layout";
 function Profile() {
-
   const userState = useSelector((state) => state.user);
 
   return (
-<Layout>
+    <Layout>
       <div className={styles.page}>
         <Box
           sx={{
@@ -20,15 +19,38 @@ function Profile() {
           }}
         >
           <Box>
-            <Box>name : {userState.name}</Box>
             <Box
               sx={{
                 display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
               }}
             >
-              role : {userState.role} <PersonIcon />
+              <AccountBoxIcon
+                sx={{
+                  color:"#90caf9",
+                  height: "200px",
+                  width: "200px",
+                }}
+              />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Box>name : {userState.name}</Box>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                role : {userState.role}
+              </Box>
+              <Logout />
             </Box>
-            <Logout />
           </Box>
         </Box>
       </div>

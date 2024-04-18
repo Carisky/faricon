@@ -19,15 +19,38 @@ function Profile() {
           }}
         >
           <Box>
-            <Box>name : {userState.name}</Box>
             <Box
               sx={{
                 display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
               }}
             >
-              role : {userState.role} <LocalPoliceIcon />
+              <LocalPoliceIcon
+                sx={{
+                  height: "200px",
+                  width: "200px",
+                }}
+              />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Box>name : {userState.name}</Box>
+              </Box>
+              <Box
+                sx={{
+                  color:"#90caf9",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                role : {userState.role}
+              </Box>
+              <Logout />
             </Box>
-            <Logout />
           </Box>
         </Box>
       </div>

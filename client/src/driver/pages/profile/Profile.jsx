@@ -3,7 +3,7 @@ import Logout from "./Logout";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import Layout from "../Layout/Layout";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 function Profile() {
   const userState = useSelector((state) => state.user);
 
@@ -19,15 +19,38 @@ function Profile() {
           }}
         >
           <Box>
-            <Box>name : {userState.name}</Box>
             <Box
               sx={{
                 display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
               }}
             >
-              role : {userState.role} <DirectionsCarIcon />
+              <DirectionsCarIcon
+                sx={{
+                  color:"#90caf9",
+                  height: "200px",
+                  width: "200px",
+                }}
+              />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Box>name : {userState.name}</Box>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                role : {userState.role}
+              </Box>
+              <Logout />
             </Box>
-            <Logout />
           </Box>
         </Box>
       </div>
