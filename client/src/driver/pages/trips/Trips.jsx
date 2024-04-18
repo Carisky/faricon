@@ -26,53 +26,52 @@ export default function Trips() {
         const response = await TripService.getTripsForDriver(userState.name);
         dismissToast(loadingToastId);
         setTrips(response.data);
-        showToast("Trips for driver fetched successfully!", 'success');
+        showToast("Trips for driver fetched successfully!", "success");
       } catch (error) {
         dismissToast(loadingToastId);
         console.error("Error fetching trips for driver:", error);
-        showToast(error.message || "Error fetching trips for driver", 'error');
+        showToast(error.message || "Error fetching trips for driver", "error");
       }
     };
-  
+
     fetchTripsForDriver();
     // eslint-disable-next-line
   }, []);
-  
+
   const handleFinishTrip = async (trip) => {
     const loadingToastId = await showToast("Finishing trip...");
     try {
       await TripService.finishTrip(userState.name, trip);
       dismissToast(loadingToastId);
-      const updatedTrips = trips.filter(t => t.id !== trip.id);
+      const updatedTrips = trips.filter((t) => t.id !== trip.id);
       setTrips(updatedTrips);
       console.log("Trip finished:", trip);
-      showToast("Trip finished successfully!", 'success');
+      showToast("Trip finished successfully!", "success");
     } catch (error) {
       dismissToast(loadingToastId);
       console.error("Error finishing trip:", error);
-      showToast(error.message || "Error finishing trip", 'error');
+      showToast(error.message || "Error finishing trip", "error");
     }
   };
-  
-
 
   return (
     <Layout>
       <div className={styles.page}>
         <h1>Trips for Driver: {userState.name}</h1>
+        {trips.length>0 ? 
         <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Trip ID</TableCell>
-                <TableCell>Destination</TableCell>
-                <TableCell>Car Brand</TableCell>
-                <TableCell>Carrying Capacity</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Intermediate Cost</TableCell>
-                <TableCell>Finish</TableCell>
-              </TableRow>
-            </TableHead>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Trip ID</TableCell>
+              <TableCell>Destination</TableCell>
+              <TableCell>Car Brand</TableCell>
+              <TableCell>Carrying Capacity</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Intermediate Cost</TableCell>
+              <TableCell>Finish</TableCell>
+            </TableRow>
+          </TableHead>
             <TableBody>
               {trips?.map((trip) => (
                 <TableRow key={trip.id}>
@@ -89,9 +88,14 @@ export default function Trips() {
                   </TableCell>
                 </TableRow>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+          </TableBody>
+        </Table>
+      </TableContainer>
+        :
+        <div>
+          no trips for {userState.name}
+        </div>
+        }
       </div>
     </Layout>
   );
