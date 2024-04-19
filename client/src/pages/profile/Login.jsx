@@ -6,6 +6,7 @@ import {
   Button,
   InputAdornment,
   OutlinedInput,
+  TextField,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -37,36 +38,35 @@ const Login = () => {
   };
 
   const loginWithRedirect = (userState) => {
-
     setTimeout(() => {
       if (typeof userState !== "undefined") {
         if (userState.role === "ADMIN") {
           navigate("/admin");
         } else if (userState.role === "USER") {
           navigate("/home");
-        } else if  (userState.role === "DRIVER"){
+        } else if (userState.role === "DRIVER") {
           navigate("/driver");
         }
       }
     }, 1200);
-
-    
   };
 
   const onSubmit = async (data) => {
-    localStorage.setItem("name", data.username);
-    localStorage.setItem("password", data.password);
-  
+    localStorage.setItem(
+      "credentials",
+      btoa(data.username + ":" + data.password)
+    );
+
     const loadingToastId = await showToast("Logging in...");
-  
+
     try {
       const response = await UserLoginService.login(
         data.username,
         data.password
       );
-  
+
       dismissToast(loadingToastId);
-  
+
       dispatch(
         setUser({
           name: response.data.name,
@@ -74,14 +74,16 @@ const Login = () => {
           password: data.password,
         })
       );
-  
-      showToast("Login successful!", 'success');
-  
-      loginWithRedirect(data);
+
+      showToast("Login successful!", "success");
+
+      setTimeout(() => {
+        loginWithRedirect(data);
+      }, 1200);
     } catch (error) {
       dismissToast(loadingToastId);
       console.error("Error fetching data:", error);
-      showToast("Wrong Credentionals","error");
+      showToast("Wrong Credentionals", "error");
     }
   };
 
@@ -102,22 +104,25 @@ const Login = () => {
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <OutlinedInput
+        <TextField
+          required={true}
           label="Username"
           {...register("username")}
           fullWidth
           margin="normal"
           error={!!errors.cargo_quantity}
           sx={{
-            marginBottom:"20px"
+            color: "#fff",
+            marginBottom: "20px",
           }}
         />
-        <OutlinedInput
+        <TextField
+          required={true}
           label="Password"
           {...register("password")}
           fullWidth
           sx={{
-            marginBottom:"20px"
+            marginBottom: "20px",
           }}
           margin="normal"
           type={showPassword === true ? "text" : "password"}

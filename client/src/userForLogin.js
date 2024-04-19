@@ -1,22 +1,7 @@
-const user = {
-    username:localStorage.getItem("name"),
-    password:localStorage.getItem("password")
-}
-
-const admin = {
-    username:"admin",
-    password:"admin_password"
-}
-
-const credentials = user.username+":"+user.password
-const adminCredentials = admin.username+":"+admin.password
-
-const encryptedCredentials = btoa(credentials)
-const encryptedAdminCredentials = btoa(adminCredentials)
+const credentials = localStorage.getItem("credentials");
 
 const AuthHeaders = {
-    user:`Basic ${encryptedCredentials}`,
-    admin:`Basic ${encryptedAdminCredentials}`
+    user:`Basic ${credentials}`,
 }
 
 export default AuthHeaders

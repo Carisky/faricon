@@ -17,7 +17,7 @@ import { Button } from "@mui/material";
 function Requests() {
   const [data, setData] = useState([]);
   const [drivers, setDrivers] = useState([]);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
